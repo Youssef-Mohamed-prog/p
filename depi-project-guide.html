@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل مشروع تخرج تحليل البيانات – DEPI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ===== Theme tokens ===== */
+  :root{
+    --bg:#F4EFE0;
+    --bg-soft:#ECE3C8;
+    --card:#FFFDF6;
+    --ink:#241F16;
+    --ink-soft:#5C5744;
+    --border:#DED0A3;
+    --brass:#8A5A16;
+    --brass-strong:#6E4610;
+    --brass-fill:#C99A3E;
+    --pine:#2F5B49;
+    --pine-fill:#3E7A61;
+    --rust:#8C4128;
+    --rust-fill:#A85338;
+    --line:#D6C79A;
+    --card-ink:#241F16;
+    --card-ink-soft:#5C5744;
+    --card-accent:#8A5A16;
+    --shadow: 0 1px 0 rgba(36,31,22,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#16211D;
+      --bg-soft:#1D2B24;
+      --card:#F4EEDA;
+      --ink:#EAE3CB;
+      --ink-soft:#AFA98F;
+      --border:#33463A;
+      --brass:#E0B45A;
+      --brass-strong:#F0C877;
+      --brass-fill:#C99A3E;
+      --pine:#7BB79B;
+      --pine-fill:#3E7A61;
+      --rust:#D08D6E;
+      --rust-fill:#A85338;
+      --line:#3A4E41;
+      --shadow: 0 1px 0 rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#16211D;
+    --bg-soft:#1D2B24;
+    --card:#F4EEDA;
+    --ink:#EAE3CB;
+    --ink-soft:#AFA98F;
+    --border:#33463A;
+    --brass:#E0B45A;
+    --brass-strong:#F0C877;
+    --brass-fill:#C99A3E;
+    --pine:#7BB79B;
+    --pine-fill:#3E7A61;
+    --rust:#D08D6E;
+    --rust-fill:#A85338;
+    --line:#3A4E41;
+    --shadow: 0 1px 0 rgba(0,0,0,0.35);
+  }
+
+  /* ===== Reset ===== */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+    line-height:1.8;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'El Messiri','Amiri',serif;
+    font-weight:700;
+    margin:0 0 .5em 0;
+    line-height:1.35;
+  }
+  p{ margin:0 0 1em 0; }
+  a{ color:var(--brass); text-decoration-color:var(--border); }
+  a:hover{ color:var(--brass-strong); }
+  ul{ margin:0; padding:0; list-style:none; }
+  img{ max-width:100%; }
+  .ltr{ direction:ltr; unicode-bidi:isolate; }
+  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+  .section-label{
+    color:var(--brass);
+    font-size:.95rem;
+    font-weight:600;
+    margin-bottom:.35em;
+  }
+  section{ padding:64px 0; }
+  section + section{ border-top:1px solid var(--line); }
+  @media (max-width:600px){
+    section{ padding:44px 0; }
+    .wrap{ padding:0 18px; }
+  }
+
+  /* ===== Header / nav ===== */
+  .site-header{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .site-header .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding-top:14px; padding-bottom:14px;
+    max-width:1040px;
+  }
+  .brand{
+    font-family:'El Messiri',serif; font-weight:700; font-size:1.05rem;
+    display:flex; align-items:center; gap:8px; white-space:nowrap;
+  }
+  .brand svg{ width:22px; height:22px; flex:none; }
+  nav.toc{
+    display:flex; gap:22px; overflow-x:auto; scrollbar-width:none;
+  }
+  nav.toc::-webkit-scrollbar{ display:none; }
+  nav.toc a{
+    color:var(--ink-soft); text-decoration:none; font-size:.92rem; white-space:nowrap;
+  }
+  nav.toc a:hover{ color:var(--brass); }
+  @media (max-width:720px){
+    nav.toc{ display:none; }
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:64px 0 56px;
+    background:
+      radial-gradient(ellipse 900px 420px at 85% -10%, color-mix(in srgb, var(--brass-fill) 16%, transparent), transparent 60%),
+      var(--bg-soft);
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap{ max-width:1040px; display:grid; grid-template-columns:1.3fr .8fr; gap:40px; align-items:center; }
+  @media (max-width:800px){ .hero .wrap{ grid-template-columns:1fr; } .hero-art{ order:-1; width:120px; margin-inline-start:auto; } }
+  .hero h1{ font-size:clamp(1.9rem, 4.4vw, 2.75rem); }
+  .hero .lede{ color:var(--ink-soft); font-size:1.08rem; max-width:46ch; }
+  .hero-art{ width:190px; color:var(--brass); opacity:.9; justify-self:end; }
+  .stat-row{ display:flex; gap:28px; margin-top:30px; flex-wrap:wrap; }
+  .stat b{ display:block; font-family:'El Messiri',serif; font-size:1.9rem; color:var(--brass); line-height:1; }
+  .stat span{ color:var(--ink-soft); font-size:.88rem; }
+
+  /* ===== Callout / pull quote ===== */
+  .callout{
+    background:var(--card); color:var(--card-ink);
+    border-inline-start:4px solid var(--brass-fill);
+    border-radius:6px; padding:22px 24px; margin-top:20px;
+    font-size:1.05rem; box-shadow:var(--shadow);
+  }
+
+  /* ===== Skeleton steps (vertical) ===== */
+  .steps{ position:relative; margin-top:28px; padding-inline-start:0; }
+  .steps::before{
+    content:""; position:absolute; top:6px; bottom:6px; inset-inline-end:19px;
+    width:2px; background:var(--line);
+  }
+  .step{ position:relative; display:flex; gap:18px; padding:0 0 26px; align-items:flex-start; }
+  .step:last-child{ padding-bottom:0; }
+  .step .num{
+    flex:none; width:40px; height:40px; border-radius:50%;
+    background:var(--card); border:2px solid var(--brass-fill);
+    color:var(--card-accent); font-weight:700; font-family:'El Messiri',serif;
+    display:flex; align-items:center; justify-content:center; font-size:1.02rem;
+    position:relative; z-index:1;
+  }
+  .step .txt{ padding-top:7px; }
+  .step .txt b{ display:block; }
+
+  /* ===== Ideas grid ===== */
+  .ideas-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:30px;
+  }
+  @media (max-width:680px){ .ideas-grid{ grid-template-columns:1fr; } }
+  .idea{
+    background:var(--card); color:var(--card-ink); border-radius:8px;
+    border-inline-start:4px solid var(--accent, var(--brass-fill));
+    padding:20px 22px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .idea.starred{ outline:1px dashed var(--brass-fill); outline-offset:4px; }
+  .idea-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .idea-num{
+    flex:none; width:26px; height:26px; border-radius:50%;
+    background:var(--accent, var(--brass-fill)); color:#fff;
+    font-size:.82rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .idea h3{ font-size:1.12rem; margin:0; }
+  .badge{
+    display:inline-block; font-size:.78rem; padding:2px 10px; border-radius:20px;
+    border:1px solid var(--border); color:var(--card-ink-soft);
+  }
+  .meter{ display:flex; gap:4px; }
+  .meter i{ width:14px; height:6px; border-radius:3px; background:var(--border); display:inline-block; }
+  .meter i.on{ background:var(--accent, var(--brass-fill)); }
+  .idea p{ margin:0; font-size:.96rem; color:var(--card-ink); }
+  .kpis{ display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+  .kpi{
+    font-size:.76rem; padding:3px 9px; border-radius:5px;
+    background:var(--bg-soft); color:var(--ink-soft); border:1px solid var(--border);
+  }
+
+  .why-panel{
+    margin-top:26px; background:var(--bg-soft); border:1px solid var(--line);
+    border-radius:8px; padding:20px 24px;
+  }
+  .why-panel h4{ margin:0 0 12px; font-family:'El Messiri',serif; font-size:1.05rem; }
+  .why-item{ display:flex; gap:10px; margin-bottom:10px; align-items:baseline; }
+  .why-item:last-child{ margin-bottom:0; }
+  .why-item .tag{ flex:none; font-weight:700; color:var(--brass); font-size:.85rem; }
+
+  /* ===== Sources ===== */
+  .sources{ margin-top:26px; display:flex; flex-direction:column; }
+  .source{
+    display:grid; grid-template-columns:1fr; gap:4px;
+    padding:18px 0; border-top:1px solid var(--line);
+  }
+  .source:first-child{ border-top:none; padding-top:0; }
+  .source h4{ margin:0; font-size:1.02rem; }
+  .source p{ margin:0; color:var(--ink-soft); font-size:.94rem; }
+  .source a{ font-size:.9rem; word-break:break-all; }
+
+  /* ===== Checklist ===== */
+  .checklist{ margin-top:24px; display:flex; flex-direction:column; gap:14px; }
+  .check{ display:flex; gap:12px; align-items:flex-start; }
+  .check svg{ flex:none; width:20px; height:20px; margin-top:3px; color:var(--pine); }
+  .check p{ margin:0; }
+
+  /* ===== Flow diagrams ===== */
+  .vision{ margin-top:8px; padding-top:34px; }
+  .vision:first-of-type{ padding-top:0; }
+  .vision + .vision{ border-top:1px dashed var(--line); }
+  .vision h3{ font-size:1.15rem; }
+  .flow{
+    display:flex; align-items:center; flex-wrap:wrap; gap:0; margin:18px 0;
+  }
+  .flow .chip{
+    background:var(--card); border:1px solid var(--border); color:var(--card-ink);
+    padding:9px 16px; border-radius:20px; font-size:.92rem; font-weight:500;
+    white-space:nowrap;
+  }
+  .flow .arrow{ color:var(--brass); padding:0 10px; font-size:1.05rem; }
+  .questions{ margin-top:14px; }
+  .questions li{ position:relative; padding-inline-start:20px; margin-bottom:8px; color:var(--ink); }
+  .questions li::before{
+    content:"–"; position:absolute; inset-inline-start:0; color:var(--brass);
+  }
+
+  /* ===== Roadmap ===== */
+  .roadmap-flow{ margin-top:28px; display:flex; flex-wrap:wrap; align-items:center; }
+  .roadmap-flow .chip{
+    background:var(--bg-soft); border:1px solid var(--line); color:var(--ink);
+    padding:8px 14px; border-radius:6px; font-size:.88rem;
+  }
+  .roadmap-flow .arrow{ color:var(--pine); padding:0 8px; }
+
+  footer{ padding:40px 0 60px; }
+  footer p{ color:var(--ink-soft); font-size:.88rem; margin:0; }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/></svg>
+      دليل مشروع التخرج
+    </div>
+    <nav class="toc">
+      <a href="#purpose">الهدف</a>
+      <a href="#skeleton">هيكل المشروع</a>
+      <a href="#ideas">أفكار المشاريع</a>
+      <a href="#sources">المصادر</a>
+      <a href="#notes">ملاحظات</a>
+      <a href="#visions">تصورات المشاريع</a>
+      <a href="#roadmap">الخطوة التالية</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="section-label">دليل مرجعي – مبادرة رواد مصر الرقمية (DEPI)</div>
+      <h1>دليل مشروع تخرج تحليل البيانات</h1>
+      <p class="lede">مجموعة أفكار مشاريع ومصادر بيانات وخطوات تنفيذ، لبناء مشروع تخرج لا يكون مجرد Dashboard، بل Case Study كاملة تبدأ من Raw Data وتنتهي بتوصيات عمل حقيقية.</p>
+      <div class="stat-row">
+        <div class="stat"><b>10</b><span>أفكار مشاريع جاهزة للدراسة</span></div>
+        <div class="stat"><b>6</b><span>مصادر بيانات وروابط مرجعية</span></div>
+        <div class="stat"><b>11</b><span>خطوة لبناء المشروع من الصفر</span></div>
+      </div>
+    </div>
+    <svg class="hero-art" viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.4">
+      <circle cx="80" cy="80" r="62"/>
+      <circle cx="80" cy="80" r="40"/>
+      <path d="M80 18 V142 M18 80 H142"/>
+      <path d="M80 40 L96 80 L80 120 L64 80 Z" stroke-width="1.8"/>
+      <circle cx="80" cy="80" r="4" fill="currentColor" stroke="none"/>
+    </svg>
+  </div>
+</section>
+
+<main>
+
+  <section id="purpose">
+    <div class="wrap">
+      <div class="section-label">١ · الهدف من الملف</div>
+      <h2>مرجع واحد لاختيار المشروع وتنفيذه</h2>
+      <p>الهدف من هذا الدليل هو تجميع أفكار المشاريع ومصادر البيانات وخطوات التنفيذ في مكان واحد، ليكون مرجعًا عند اختيار وتنفيذ مشروع تخرج Data Analysis ضمن مبادرة رواد مصر الرقمية (DEPI).</p>
+      <div class="callout">الفكرة الأساسية: المشروع لا يكون مجرد Dashboard، بل Case Study تبدأ من Raw Data وتنتهي بـ Business Insights وتوصيات مبنية على البيانات.</div>
+    </div>
+  </section>
+
+  <section id="skeleton">
+    <div class="wrap">
+      <div class="section-label">٢ · هيكل مشروع التخرج المقترح</div>
+      <h2>من المشكلة إلى العرض النهائي</h2>
+      <p>أحد عشر عنصرًا يفضّل أن يمر بها أي مشروع تخرج قوي، بالترتيب:</p>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div class="txt"><b>Business Problem</b>المشكلة التي يحاول المشروع حلها</div></div>
+        <div class="step"><div class="num">2</div><div class="txt"><b>Objectives</b>أهداف التحليل</div></div>
+        <div class="step"><div class="num">3</div><div class="txt"><b>Dataset</b>مصدر البيانات</div></div>
+        <div class="step"><div class="num">4</div><div class="txt"><b>Data Cleaning & Transformation</b>باستخدام Excel / Power Query</div></div>
+        <div class="step"><div class="num">5</div><div class="txt"><b>SQL Queries</b>لاستخراج وتحليل البيانات</div></div>
+        <div class="step"><div class="num">6</div><div class="txt"><b>Data Model</b>وعلاقات الجداول</div></div>
+        <div class="step"><div class="num">7</div><div class="txt"><b>KPIs و DAX Measures</b></div></div>
+        <div class="step"><div class="num">8</div><div class="txt"><b>Power BI Dashboard</b></div></div>
+        <div class="step"><div class="num">9</div><div class="txt"><b>Insights</b>أهم ما اكتُشف من البيانات</div></div>
+        <div class="step"><div class="num">10</div><div class="txt"><b>Business Recommendations</b>توصيات مبنية على النتائج</div></div>
+        <div class="step"><div class="num">11</div><div class="txt"><b>Presentation</b>عرض القصة التحليلية</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ideas">
+    <div class="wrap">
+      <div class="section-label">٣ · أهم ١٠ أفكار للمشاريع</div>
+      <h2>اختر المجال الأقرب لاهتمامك</h2>
+      <div class="ideas-grid">
+
+        <div class="idea starred" style="--accent:var(--brass-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--brass-fill)">1</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">E-Commerce Customer & Sales Analytics</h3>
+          <span class="badge">E-commerce</span>
+          <p>تحليل أداء متجر إلكتروني وسلوك العملاء والطلبات والمنتجات والـ Website Sessions.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Total Revenue</span><span class="kpi">Total Orders</span><span class="kpi">AOV</span>
+            <span class="kpi">Customer Lifetime Value</span><span class="kpi">Conversion Rate</span>
+            <span class="kpi">Repeat Customers</span><span class="kpi">Sales by Category/Product</span>
+            <span class="kpi">Sales by Country/Region</span>
+          </div>
+        </div>
+
+        <div class="idea starred" style="--accent:var(--pine-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--pine-fill)">2</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Global Electronics Retail Analytics</h3>
+          <span class="badge">Retail</span>
+          <p>تحليل المبيعات والعملاء والمنتجات والمناطق والربحية لمتجر إلكترونيات عالمي.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Revenue</span><span class="kpi">Orders</span><span class="kpi">Quantity</span>
+            <span class="kpi">Profit</span><span class="kpi">AOV</span><span class="kpi">Product Performance</span>
+            <span class="kpi">Customer Analysis</span><span class="kpi">Geographical Analysis</span>
+          </div>
+        </div>
+
+        <div class="idea starred" style="--accent:var(--rust-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--rust-fill)">3</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Telecom Customer Churn</h3>
+          <span class="badge">Telecom</span>
+          <p>تحليل العملاء الذين يغادرون شركة الاتصالات والعوامل المرتبطة بالـ Churn.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Total Customers</span><span class="kpi">Churn Rate</span><span class="kpi">Active Customers</span>
+            <span class="kpi">Churned Customers</span><span class="kpi">Average Tenure</span><span class="kpi">Revenue by Segment</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--brass-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--brass-fill)">4</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          </div>
+          <h3 class="ltr">Bank Customer Churn</h3>
+          <span class="badge">Banking</span>
+          <p>تحليل سلوك عملاء البنك وخصائص العملاء المرتبطة بالـ Churn.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Customer Churn</span><span class="kpi">Age</span><span class="kpi">Geography</span>
+            <span class="kpi">Balance</span><span class="kpi">Credit Score</span><span class="kpi">Products</span>
+            <span class="kpi">Tenure</span><span class="kpi">Estimated Salary</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--pine-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--pine-fill)">5</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          </div>
+          <h3 class="ltr">HR & Employee Analytics</h3>
+          <span class="badge">HR</span>
+          <p>تحليل القوى العاملة والـ Turnover وتوزيع الموظفين والأقسام.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Total Employees</span><span class="kpi">New Hires</span><span class="kpi">Attrition</span>
+            <span class="kpi">Attrition Rate</span><span class="kpi">Average Tenure</span><span class="kpi">Employees by Department/Role</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--rust-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--rust-fill)">6</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Customer Profitability</h3>
+          <span class="badge">Finance / Sales</span>
+          <p>تحليل الإيرادات والتكاليف والربحية على مستوى العملاء والشرائح.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Revenue</span><span class="kpi">Cost</span><span class="kpi">Gross Margin</span>
+            <span class="kpi">Gross Margin %</span><span class="kpi">Profit</span><span class="kpi">Customer Lifetime Value</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--brass-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--brass-fill)">7</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Sales & Marketing Performance</h3>
+          <span class="badge">Marketing</span>
+          <p>تحليل أداء التسويق والمبيعات والـ Leads والـ Conversions والـ Market Share.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Campaigns</span><span class="kpi">Leads</span><span class="kpi">Conversions</span>
+            <span class="kpi">Conversion Rate</span><span class="kpi">Revenue</span><span class="kpi">Units</span>
+            <span class="kpi">Market Share</span><span class="kpi">Growth</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--pine-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--pine-fill)">8</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Airline Customer Satisfaction</h3>
+          <span class="badge">Travel</span>
+          <p>تحليل تجربة المسافرين والعوامل المرتبطة بمستويات رضا العملاء.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Overall Satisfaction</span><span class="kpi">Customer Type</span><span class="kpi">Travel Type</span>
+            <span class="kpi">Class</span><span class="kpi">Flight Distance</span><span class="kpi">Seat Comfort</span>
+            <span class="kpi">Online Boarding</span><span class="kpi">In-flight Service</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--rust-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--rust-fill)">9</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <h3 class="ltr">Hospital Patient Analytics</h3>
+          <span class="badge">Healthcare</span>
+          <p>تحليل المرضى والدخول للمستشفى والإقامات والإجراءات والتكاليف والأقسام.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Patients</span><span class="kpi">Admissions</span><span class="kpi">Length of Stay</span>
+            <span class="kpi">Departments</span><span class="kpi">Procedures</span><span class="kpi">Costs</span>
+            <span class="kpi">Demographics</span>
+          </div>
+        </div>
+
+        <div class="idea" style="--accent:var(--brass-fill)">
+          <div class="idea-top">
+            <div><span class="idea-num" style="background:var(--brass-fill)">10</span></div>
+            <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          </div>
+          <h3 class="ltr">Coffee Shop Business Analytics</h3>
+          <span class="badge">F&B</span>
+          <p>تحليل أداء متجر قهوة من حيث المبيعات والمعاملات والمنتجات والمواقع والأوقات.</p>
+          <div class="kpis ltr">
+            <span class="kpi">Revenue</span><span class="kpi">Transactions</span><span class="kpi">Average Transaction Value</span>
+            <span class="kpi">Quantity Sold</span><span class="kpi">Revenue by Store</span><span class="kpi">Revenue by Product</span>
+            <span class="kpi">Time Analysis</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="why-panel">
+        <h4>لماذا تبدأ بالأفكار المؤطّرة (١، ٢، ٣)؟</h4>
+        <div class="why-item"><span class="tag">E-Commerce</span><span>يسمح بإظهار SQL + Power Query + Power BI + DAX + Customer Analytics + Business Insights في مشروع واحد.</span></div>
+        <div class="why-item"><span class="tag">Retail</span><span>مناسب لإظهار Data Model وتحليل Sales / Customer / Product / Geography معًا.</span></div>
+        <div class="why-item"><span class="tag">Telecom Churn</span><span>ينقل المشروع من Dashboard مبيعات فقط إلى تحليل مشكلة Business واضحة.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="wrap">
+      <div class="section-label">٤ · المصادر وروابط البيانات</div>
+      <h2>من أين تجيب الـ Dataset</h2>
+      <div class="sources">
+
+        <div class="source">
+          <h4>Maven Analytics – Data Playground</h4>
+          <p>مصدر رئيسي لـ Datasets مجانية في Retail وFinance وHealthcare وHR وHospitality وغيرها.</p>
+          <a class="ltr" href="https://mavenanalytics.io/data-playground" target="_blank" rel="noopener">mavenanalytics.io/data-playground</a>
+        </div>
+
+        <div class="source">
+          <h4>Maven Analytics – Project Showcase</h4>
+          <p>لرؤية مشاريع وتحليلات منشورة والاستفادة من طريقة عرض الـ Case Study.</p>
+          <a class="ltr" href="https://www.mavenanalytics.io/showcase" target="_blank" rel="noopener">mavenanalytics.io/showcase</a>
+        </div>
+
+        <div class="source">
+          <h4>Microsoft Power BI Sample Datasets</h4>
+          <p>Samples رسمية لـ Power BI تشمل Retail وHR وCustomer Profitability وSales & Marketing وغيرها.</p>
+          <a class="ltr" href="https://learn.microsoft.com/en-us/power-bi/create-reports/sample-datasets" target="_blank" rel="noopener">learn.microsoft.com/.../sample-datasets</a>
+        </div>
+
+        <div class="source">
+          <h4>Microsoft – Customer Profitability Sample</h4>
+          <p>مرجع لفكرة تحليل Revenue وCost وGross Margin وProfit.</p>
+          <a class="ltr" href="https://learn.microsoft.com/en-us/power-bi/create-reports/sample-customer-profitability" target="_blank" rel="noopener">learn.microsoft.com/.../sample-customer-profitability</a>
+        </div>
+
+        <div class="source">
+          <h4>Microsoft – Sales & Marketing Sample</h4>
+          <p>مرجع لفكرة تحليل التسويق والمبيعات والـ Market Share والـ Growth.</p>
+          <a class="ltr" href="https://learn.microsoft.com/en-us/power-bi/create-reports/sample-sales-and-marketing" target="_blank" rel="noopener">learn.microsoft.com/.../sample-sales-and-marketing</a>
+        </div>
+
+        <div class="source">
+          <h4>Maven – Coffee Shop Sales</h4>
+          <p>Dataset لمعاملات ومبيعات متجر قهوة وتحليل الوقت والمنتجات والمواقع.</p>
+          <a class="ltr" href="https://mavenanalytics.io/data-playground/coffee-shop-sales" target="_blank" rel="noopener">mavenanalytics.io/data-playground/coffee-shop-sales</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="wrap">
+      <div class="section-label">٥ · ملاحظات مهمة عند اختيار الـ Dataset</div>
+      <h2>قبل ما تحسم اختيارك</h2>
+      <div class="checklist">
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>
+          <p>لا تختار Dataset كبيرة لمجرد أنها تحتوي على ملايين الصفوف؛ الأهم وجود Business Problem واضح.</p>
+        </div>
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>
+          <p>يفضّل أن تسمح البيانات بأكثر من زاوية تحليل: Time + Product + Customer + Geography + Profit/Sales حسب المجال.</p>
+        </div>
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>
+          <p>Multi-table datasets مفيدة لإظهار Data Modeling وRelationships.</p>
+        </div>
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>
+          <p>لا تنسخ Power BI Sample كما هو؛ استخدمه كمرجع ثم ابنِ Case Study وDashboard خاصين بك.</p>
+        </div>
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>
+          <p>المشروع الأقوى في العرض هو الذي يوضح لماذا حللت هذه البيانات، وما القرار أو الإجراء الذي يمكن أن تدعمه النتائج.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visions">
+    <div class="wrap">
+      <div class="section-label">٦ · تصور مبدئي لثلاثة مشاريع</div>
+      <h2>كيف تتحرك البيانات داخل كل مشروع</h2>
+
+      <div class="vision">
+        <h3>مشروع E-Commerce</h3>
+        <div class="flow ltr">
+          <span class="chip">Website Sessions</span><span class="arrow">→</span>
+          <span class="chip">Customers</span><span class="arrow">→</span>
+          <span class="chip">Orders</span><span class="arrow">→</span>
+          <span class="chip">Products</span><span class="arrow">→</span>
+          <span class="chip">Revenue</span><span class="arrow">→</span>
+          <span class="chip">Business Insights</span>
+        </div>
+        <p>أسئلة محتملة:</p>
+        <ul class="questions">
+          <li>من أكثر العملاء قيمة؟</li>
+          <li>ما المنتجات والفئات الأعلى مبيعًا؟</li>
+          <li>كيف يتغيّر Revenue بمرور الوقت؟</li>
+          <li>ما المناطق الأفضل؟ وما الـ AOV؟</li>
+          <li>ما نسبة تكرار الشراء؟ وهل توجد منتجات ذات مبيعات عالية وربحية منخفضة؟</li>
+        </ul>
+      </div>
+
+      <div class="vision">
+        <h3>مشروع Customer Churn</h3>
+        <div class="flow ltr">
+          <span class="chip">Customer Data</span><span class="arrow">→</span>
+          <span class="chip">Cleaning</span><span class="arrow">→</span>
+          <span class="chip">Segmentation</span><span class="arrow">→</span>
+          <span class="chip">Churn Analysis</span><span class="arrow">→</span>
+          <span class="chip">High-Risk Segments</span><span class="arrow">→</span>
+          <span class="chip">Business Recommendations</span>
+        </div>
+        <p>أسئلة محتملة:</p>
+        <ul class="questions">
+          <li>هل يختلف الـ Churn حسب مدة الاشتراك أو نوع العقد أو الخدمة أو مستوى الإنفاق؟</li>
+          <li>ما الشرائح التي تحتاج إلى مزيد من التحليل؟</li>
+        </ul>
+      </div>
+
+      <div class="vision">
+        <h3>مشروع Retail / Electronics</h3>
+        <div class="flow ltr">
+          <span class="chip">Transactions</span><span class="arrow">→</span>
+          <span class="chip">Products</span><span class="arrow">→</span>
+          <span class="chip">Customers</span><span class="arrow">→</span>
+          <span class="chip">Regions</span><span class="arrow">→</span>
+          <span class="chip">Sales + Profit</span><span class="arrow">→</span>
+          <span class="chip">Business Insights</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-label">٧ · الخطوة التالية المقترحة</div>
+      <h2>بعد اختيار الفكرة، حوّلها لخطة تنفيذ كاملة</h2>
+      <p>حالما تحسم فكرة واحدة من العشرة، رتّب تنفيذها على هذا المسار:</p>
+      <div class="roadmap-flow ltr">
+        <span class="chip">Project Title</span><span class="arrow">→</span>
+        <span class="chip">Business Problem</span><span class="arrow">→</span>
+        <span class="chip">Objectives</span><span class="arrow">→</span>
+        <span class="chip">Dataset</span><span class="arrow">→</span>
+        <span class="chip">Tables</span><span class="arrow">→</span>
+        <span class="chip">SQL Questions</span><span class="arrow">→</span>
+        <span class="chip">KPIs</span><span class="arrow">→</span>
+        <span class="chip">DAX Measures</span><span class="arrow">→</span>
+        <span class="chip">Power BI Pages</span><span class="arrow">→</span>
+        <span class="chip">Charts</span><span class="arrow">→</span>
+        <span class="chip">Insights</span><span class="arrow">→</span>
+        <span class="chip">Recommendations</span><span class="arrow">→</span>
+        <span class="chip">Presentation</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>دليل مرجعي لدعم اختيار وتنفيذ مشروع تخرج تحليل بيانات ضمن مبادرة رواد مصر الرقمية (DEPI).</p>
+  </div>
+</footer>
+
+</body>
+</html>
